@@ -4,9 +4,17 @@ def make_properties_required(schema):
 
 BALANCE_PROOF_SCHEMA = {
     'type': 'object',
-    'required': [],
+    'required': [
+        'channel_identifier',
+        'nonce',
+        'chain_id',
+        'token_network_address',
+        'balance_hash',
+        'additional_hash',
+        'signature',
+    ],
     'properties': {
-        'channel_id': {
+        'channel_identifier': {
             'type': 'integer',
         },
         'nonce': {
@@ -15,46 +23,34 @@ BALANCE_PROOF_SCHEMA = {
         'chain_id': {
             'type': 'integer',
         },
-        'contract_address': {
+        'token_network_address': {
             'type': 'string'
         },
-        'extra_hash': {
+        'balance_hash': {
+            'type': 'string'
+        },
+        'additional_hash': {
+            'type': 'string'
+        },
+        'signature': {
             'type': 'string'
         },
         'transferred_amount': {
-            'type': 'integer'
+            'type': 'integer',
         },
-        'timestamp': {
-            'type': 'number',
-        }
+        'locked_amount': {
+            'type': 'integer',
+        },
+        'locksroot': {
+            'type': 'string'
+        },
     }
 }
-make_properties_required(BALANCE_PROOF_SCHEMA)
 
 MONITOR_REQUEST_SCHEMA = {
     'type': 'object',
     'required': [],
     'properties': {
-        'channel_identifier': {
-            'type': 'integer',
-            'minimum': 1
-        },
-        'nonce': {
-            'type': 'integer',
-            'minimum': 0
-        },
-        'transferred_amount': {
-            'type': 'integer'
-        },
-        'locksroot': {
-            'type': 'string'
-        },
-        'extra_hash': {
-            'type': 'string'
-        },
-        'balance_proof_signature': {
-            'type': 'string'
-        },
         'reward_sender_address': {
             'type': 'string'
         },
@@ -64,14 +60,11 @@ MONITOR_REQUEST_SCHEMA = {
         'reward_amount': {
             'type': 'integer',
         },
-        'token_network_address': {
-            'type': 'string',
-        },
         'monitor_address': {
             'type': 'string',
         },
-        'chain_id': {
-            'type': 'integer',
+        'balance_proof': {
+            'type': 'object',
         }
     }
 }
@@ -84,7 +77,7 @@ FEE_INFO_SCHEMA = {
         'chain_id',
         'channel_identifier',
         'nonce',
-        'percentage_fee',
+        'relative_fee',
         'signature',
     ],
     'properties': {
@@ -102,8 +95,97 @@ FEE_INFO_SCHEMA = {
             'type': 'integer',
             'minimum': 0
         },
-        'percentage_fee': {
+        'relative_fee': {
+            'type': 'integer',
+            'minimum': 0
+        },
+        'signature': {
+            'type': 'string'
+        },
+    }
+}
+
+PATHS_REQUEST_SCHEMA = {
+    'type': 'object',
+    'required': [
+        'token_network_address',
+        'target_address',
+        'value',
+        'num_paths',
+        'chain_id',
+        'nonce',
+        'signature',
+    ],
+    'properties': {
+        'token_network_address': {
             'type': 'string',
+        },
+        'target_address': {
+            'type': 'string',
+        },
+        'value': {
+            'type': 'integer',
+            'minimum': 1
+        },
+        'num_paths': {
+            'type': 'integer',
+            'minimum': 1
+        },
+        'chain_id': {
+            'type': 'integer',
+            'minimum': 1
+        },
+        'nonce': {
+            'type': 'integer',
+            'minimum': 0
+        },
+        'signature': {
+            'type': 'string'
+        },
+    }
+}
+
+PATHS_REPLY_SCHEMA = {
+    'type': 'object',
+    'required': [
+        'token_network_address',
+        'target_address',
+        'value',
+        'num_paths',
+        'chain_id',
+        'nonce',
+        'paths',
+        'estimated_fees',
+        'signature',
+    ],
+    'properties': {
+        'token_network_address': {
+            'type': 'string',
+        },
+        'target_address': {
+            'type': 'string',
+        },
+        'value': {
+            'type': 'integer',
+            'minimum': 1
+        },
+        'num_paths': {
+            'type': 'integer',
+            'minimum': 1
+        },
+        'chain_id': {
+            'type': 'integer',
+            'minimum': 1
+        },
+        'nonce': {
+            'type': 'integer',
+            'minimum': 0
+        },
+        'paths': {
+            'type': 'array',
+        },
+        'estimated_fees': {
+            'type': 'array',
         },
         'signature': {
             'type': 'string'
